@@ -1,0 +1,40 @@
+# Jetson Orin Nano EEG node configuration
+# Hardware: Jetson Orin Nano (Eteru-Orion) + USB-BT500 dongle + Neurable MW75 Neuro
+#
+# IMPORTANT: The Jetson internal Realtek Bluetooth adapter returns ATT 0x81
+# (ENOSYS) on BLE GATT writes, causing GAIA activation to fail.
+# You MUST use an external USB-BT500 (RTL8761B + btusb driver) which provides
+# macOS CoreBluetooth-equivalent behaviour on Linux.
+
+[device]
+name = "jetson-orin-1"
+platform = "jetson-orin"
+# On Jetson, USB-BT500 is typically hci1 (internal = hci0)
+preferred_adapter = "hci1"
+
+[ble]
+scan_timeout_secs = 15
+adapter_index = 1  # USB-BT500 adapter (NOT the internal Realtek)
+
+[rfcomm]
+eeg_channel = 25
+heartbeat_channel = 1
+ring_buffer_size = 1000
+stall_threshold_ms = 50
+
+[sync]
+enabled = true
+multicast_addr = "224.0.0.1"
+port = 5005
+epoch_secs = 1
+
+[simulation]
+enabled = false
+drop_rate = 0.0
+jitter_ms = 0
+corruption_rate = 0.0
+timeout_after = 0
+stress_reconnect = false
+
+[logging]
+level = "info"
