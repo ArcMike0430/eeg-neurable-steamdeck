@@ -1,0 +1,33 @@
+# Jetson Orin Nano EEG Profile
+# Optimised for headless edge-AI operation
+
+[device]
+name_prefix = "MW75"
+rfcomm_channel = 25
+scan_timeout_secs = 30
+ble_adapter = ""            # empty = auto-select (hci0 typical)
+
+[stream]
+sample_rate_hz = 500
+simulate = false
+
+[output]
+csv_path = "/data/eeg/eeg_{timestamp}.csv"
+csv_flush_interval_secs = 2
+websocket_enabled = true
+websocket_bind = "0.0.0.0:8765"
+lsl_enabled = true
+
+[power]
+battery_aware = false       # AC-powered
+
+[logging]
+level = "info"
+log_file = "/var/log/eeg-neurable/eeg.log"
+log_rotate_mb = 50
+
+[edge_ai]
+# Jetson-specific: feed EEG stream to a local inference engine
+enabled = false
+model_path = "/opt/eeg-models/alpha_classifier.onnx"
+inference_interval_packets = 100

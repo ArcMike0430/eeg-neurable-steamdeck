@@ -1,0 +1,28 @@
+# Steam Deck EEG Profile
+# Optimised for battery-constrained, handheld operation
+
+[device]
+name_prefix = "MW75"
+rfcomm_channel = 25
+scan_timeout_secs = 15
+ble_adapter = ""            # empty = auto-select
+
+[stream]
+sample_rate_hz = 500
+simulate = false
+
+[output]
+csv_path = "/home/deck/eeg_data/eeg_{timestamp}.csv"
+csv_flush_interval_secs = 5
+websocket_enabled = false
+lsl_enabled = false
+
+[power]
+# Reduce screen brightness and disable GPU features via SteamOS
+battery_aware = true
+low_battery_threshold_pct = 20
+
+[logging]
+level = "info"              # trace | debug | info | warn | error
+log_file = "/home/deck/.local/share/eeg-neurable/eeg.log"
+log_rotate_mb = 10

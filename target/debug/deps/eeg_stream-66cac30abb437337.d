@@ -1,0 +1,7 @@
+/home/runner/work/eeg-neurable-steamdeck/eeg-neurable-steamdeck/target/debug/deps/eeg_stream-66cac30abb437337.d: src/bin/eeg_stream.rs
+
+/home/runner/work/eeg-neurable-steamdeck/eeg-neurable-steamdeck/target/debug/deps/eeg_stream-66cac30abb437337: src/bin/eeg_stream.rs
+
+src/bin/eeg_stream.rs:
+
+# env-dep:CARGO_PKG_VERSION=0.1.0
