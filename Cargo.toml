@@ -1,0 +1,79 @@
+[package]
+name = "eeg-neurable-steamdeck"
+version = "0.1.0"
+edition = "2021"
+authors = ["Neurable MW75 EEG Pipeline"]
+description = "Real-time 12-channel EEG acquisition from Neurable MW75 Neuro headphones"
+license = "MIT"
+
+# ----- Binaries -----
+
+[[bin]]
+name = "eeg-stream"
+path = "src/bin/eeg_stream.rs"
+
+[[bin]]
+name = "ble-probe"
+path = "src/bin/ble_probe.rs"
+
+# ----- Features -----
+
+[features]
+# Default: include TUI
+default = ["tui"]
+
+# ratatui terminal UI
+tui = ["dep:ratatui", "dep:crossterm"]
+
+# Real RFCOMM socket support (Linux BlueZ)
+rfcomm = ["dep:nix"]
+
+# Mock / simulation mode (no hardware required)
+simulation = []
+
+# ----- Dependencies -----
+
+[dependencies]
+# BLE (always required — USB-BT500 + btleplug behaves like macOS CoreBluetooth)
+btleplug = "0.11"
+uuid = { version = "1", features = ["v4"] }
+
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+
+# Data / serialisation
+byteorder = "1"
+ringbuf = "0.3"
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+
+# Logging
+log = "0.4"
+env_logger = "0.11"
+
+# Error handling
+anyhow = "1"
+thiserror = "2"
+
+# Time
+chrono = { version = "0.4", features = ["serde"] }
+
+# Random (simulation + mock)
+rand = "0.8"
+
+# libc (for platform-level socket operations)
+libc = "0.2"
+
+# Network (peer sync UDP multicast)
+socket2 = "0.5"
+
+# RFCOMM Linux sockets (optional)
+nix = { version = "0.29", features = ["net", "socket"], optional = true }
+
+# TUI (optional)
+ratatui = { version = "0.26", optional = true }
+crossterm = { version = "0.27", optional = true }
+
+[dev-dependencies]
+tempfile = "3"
+tokio = { version = "1", features = ["full", "test-util"] }

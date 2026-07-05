@@ -1,0 +1,35 @@
+# Steam Deck EEG node configuration
+# Hardware: Steam Deck (AMD GPU) + USB-BT500 dongle + Neurable MW75 Neuro
+
+[device]
+name = "steam-deck-1"
+platform = "steam-deck"
+# USB-BT500 is typically hci1 when the internal BT chip is also present
+preferred_adapter = "hci1"
+
+[ble]
+scan_timeout_secs = 10
+adapter_index = 1  # Adapter index 1 for USB-BT500 on Steam Deck
+
+[rfcomm]
+eeg_channel = 25
+heartbeat_channel = 1
+ring_buffer_size = 1000
+stall_threshold_ms = 50
+
+[sync]
+enabled = true
+multicast_addr = "224.0.0.1"
+port = 5005
+epoch_secs = 1
+
+[simulation]
+enabled = false
+drop_rate = 0.0
+jitter_ms = 0
+corruption_rate = 0.0
+timeout_after = 0  # 0 = no limit
+stress_reconnect = false
+
+[logging]
+level = "info"
