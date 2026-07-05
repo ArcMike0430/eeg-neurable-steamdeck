@@ -1,0 +1,53 @@
+[package]
+name = "eeg_neurable_steamdeck"
+version = "0.1.0"
+edition = "2021"
+description = "MW75 EEG acquisition for Steam Deck and Jetson"
+license = "MIT"
+
+[lib]
+name = "eeg_neurable_steamdeck"
+path = "src/lib.rs"
+
+[features]
+default = ["tui"]
+tui = ["dep:ratatui"]
+rfcomm = []
+websocket = []
+lsl = []
+simulation = []
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+log = "0.4"
+env_logger = "0.11"
+rand = "0.8"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+ratatui = { version = "0.28", optional = true }
+
+[dev-dependencies]
+approx = "0.5"
+
+[[bin]]
+name = "eeg-stream"
+path = "src/bin/eeg-stream.rs"
+
+[[bin]]
+name = "eeg-tui"
+path = "src/bin/eeg-tui.rs"
+required-features = ["tui"]
+
+[[bin]]
+name = "ble-probe"
+path = "src/bin/ble-probe.rs"
+
+[[bin]]
+name = "rfcomm-debug"
+path = "src/bin/rfcomm-debug.rs"
+
+[[bin]]
+name = "sync-relay"
+path = "src/bin/sync-relay.rs"
