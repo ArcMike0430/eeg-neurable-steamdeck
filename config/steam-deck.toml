@@ -1,0 +1,10 @@
+[adapter]
+prefer_usb = true
+fallback_internal = true
+
+[ui]
+mode = "tui"
+refresh_hz = 30
+
+[buffer]
+frames = 500

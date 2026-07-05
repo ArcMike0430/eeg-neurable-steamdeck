@@ -1,0 +1,10 @@
+[adapter]
+prefer_usb = true
+require_usb = true
+
+[runtime]
+mode = "headless"
+inference = true
+
+[buffer]
+frames = 1000

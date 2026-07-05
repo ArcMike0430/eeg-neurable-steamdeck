@@ -1,0 +1,20 @@
+[adapter]
+prefer_usb = true
+required_driver = "btusb"
+
+[protocol]
+gaia_service_uuid = "00001100-d102-11e1-9b23-00025b00a5a5"
+gaia_control_uuid = "00001101-d102-11e1-9b23-00025b00a5a5"
+eeg_service_uuid = "df21fe2c-2515-4fdb-8886-f12c4d679277"
+# Default EEG conversion factor in µV/ADC for consumer MW75 firmware.
+scaling_uv = 0.023842
+
+[reconnect]
+max_attempts = 6
+max_backoff_seconds = 30
+
+[mock]
+enabled = false
+drop_rate = 0.0
+jitter_ms = 0
+corrupt_rate = 0.01
