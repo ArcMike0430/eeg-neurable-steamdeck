@@ -51,6 +51,7 @@ impl Mw75Client {
 
     pub fn reconnect_with_backoff(&self) -> Result<()> {
         for attempt in 0..self.retries {
+            // Exponential backoff: 1s, 2s, 4s, ... (capped to 30s between retries).
             let wait = (1u64 << attempt.min(5)).min(30);
             info!("reconnect attempt {} in {}s", attempt + 1, wait);
             thread::sleep(std::time::Duration::from_secs(wait));

@@ -17,7 +17,6 @@ impl PeerSync {
         let addr = SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, MULTICAST_PORT);
         let socket = UdpSocket::bind(addr)?;
         socket.join_multicast_v4(&MULTICAST_GROUP, &Ipv4Addr::UNSPECIFIED)?;
-        socket.set_nonblocking(false)?;
         Ok(Self { socket })
     }
 

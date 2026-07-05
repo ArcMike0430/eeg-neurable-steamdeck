@@ -56,13 +56,25 @@ impl PacketParser {
         let event_id = packet[1];
         let len = packet[2];
         let counter = packet[3];
-        let ref_signal = f32::from_le_bytes(packet[4..8].try_into().expect("ref slice"));
-        let drl_signal = f32::from_le_bytes(packet[8..12].try_into().expect("drl slice"));
+        let ref_signal = f32::from_le_bytes(
+            packet[4..8]
+                .try_into()
+                .expect("ref_signal slice should be exactly 4 bytes"),
+        );
+        let drl_signal = f32::from_le_bytes(
+            packet[8..12]
+                .try_into()
+                .expect("drl_signal slice should be exactly 4 bytes"),
+        );
 
         let mut eeg_uv = [0.0f32; EEG_CHANNELS];
         let mut idx = 12usize;
         for ch in &mut eeg_uv {
-            let raw = f32::from_le_bytes(packet[idx..idx + 4].try_into().expect("eeg slice"));
+            let raw = f32::from_le_bytes(
+                packet[idx..idx + 4]
+                    .try_into()
+                    .expect("EEG channel slice should be exactly 4 bytes"),
+            );
             *ch = raw * self.scaling_uv;
             idx += 4;
         }
@@ -92,7 +104,7 @@ impl PacketParser {
             return Vec::new();
         }
         if gap > MAX_INTERPOLATION_GAP {
-            return vec![nan_marker(previous.counter.wrapping_add(1), previous, next)];
+            return vec![nan_marker(previous.counter.wrapping_add(1), previous)];
         }
 
         (1..=gap)
@@ -118,7 +130,7 @@ impl PacketParser {
     }
 }
 
-fn nan_marker(counter: u8, previous: &EegPacket, next: &EegPacket) -> EegPacket {
+fn nan_marker(counter: u8, previous: &EegPacket) -> EegPacket {
     EegPacket {
         event_id: previous.event_id,
         len: previous.len,
@@ -126,7 +138,7 @@ fn nan_marker(counter: u8, previous: &EegPacket, next: &EegPacket) -> EegPacket 
         ref_signal: f32::NAN,
         drl_signal: f32::NAN,
         eeg_uv: [f32::NAN; EEG_CHANNELS],
-        status: next.status,
+        status: previous.status,
         checksum: 0,
         timestamp_us: previous.timestamp_us,
     }

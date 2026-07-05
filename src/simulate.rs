@@ -64,6 +64,7 @@ impl MockSimulator {
         self.counter = self.counter.wrapping_add(1);
 
         if rng.gen_bool(self.cfg.corrupt_rate.clamp(0.0, 1.0) as f64) {
+            // Keep checksum bytes intact so parser checksum validation catches corruption.
             let idx = rng.gen_range(0..packet.len() - 2);
             packet[idx] ^= 0xA5;
         }

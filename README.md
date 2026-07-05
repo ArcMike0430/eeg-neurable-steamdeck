@@ -1,6 +1,6 @@
 # EEG Raw Data Acquisition System for MW75
 
-This repository provides a Rust-based EEG pipeline for Neurable MW75 on Steam Deck and Jetson Orin.
+This repository provides a Rust-based EEG pipeline for Neurable MW75 Neuro headphones (12-channel dry EEG) on Steam Deck and Jetson Orin.
 
 ## Architecture
 - **Two phase protocol:** BLE GAIA activation then BT Classic RFCOMM streaming (ch25, 63-byte packets at 500Hz).

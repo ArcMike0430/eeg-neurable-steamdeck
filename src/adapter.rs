@@ -2,6 +2,8 @@ use std::process::Command;
 
 use crate::types::AdapterInfo;
 
+const USB_INDICATORS: &[&str] = &["USB", "btusb", "RTL8761"];
+
 pub fn enumerate_adapters() -> Vec<AdapterInfo> {
     let output = Command::new("hciconfig").arg("-a").output();
     let Ok(output) = output else {
@@ -26,8 +28,7 @@ pub fn enumerate_adapters() -> Vec<AdapterInfo> {
             if name.is_empty() {
                 continue;
             }
-            let is_usb =
-                block.contains("USB") || block.contains("btusb") || block.contains("RTL8761");
+            let is_usb = USB_INDICATORS.iter().any(|needle| block.contains(needle));
             let address = block
                 .lines()
                 .find(|line| line.contains("BD Address"))

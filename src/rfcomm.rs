@@ -24,7 +24,9 @@ impl RingBuffer {
 
     pub fn push_frame(&self, frame: Vec<u8>) {
         let (lock, cv) = &*self.inner;
-        let mut q = lock.lock().expect("ring lock poisoned");
+        let mut q = lock
+            .lock()
+            .expect("RingBuffer lock poisoned during push_frame");
         if q.len() >= self.cap {
             q.pop_front();
         }
@@ -34,9 +36,13 @@ impl RingBuffer {
 
     pub fn pop_frame_timeout(&self, timeout: Duration) -> Option<Vec<u8>> {
         let (lock, cv) = &*self.inner;
-        let mut q = lock.lock().ok()?;
+        let mut q = lock
+            .lock()
+            .expect("RingBuffer lock poisoned during pop_frame_timeout");
         if q.is_empty() {
-            let (new_q, _) = cv.wait_timeout(q, timeout).ok()?;
+            let (new_q, _) = cv
+                .wait_timeout(q, timeout)
+                .expect("RingBuffer condvar poisoned during pop_frame_timeout");
             q = new_q;
         }
         q.pop_front()
